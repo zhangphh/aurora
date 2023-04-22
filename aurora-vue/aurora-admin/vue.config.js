@@ -8,8 +8,8 @@ module.exports = defineConfig({
   productionSourceMap: false,
   devServer: {
     proxy: {
-      '/api': {
-        target: 'http://localhost:8080',
+      '/api/admin': {
+        target: 'http://localhost:9999',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

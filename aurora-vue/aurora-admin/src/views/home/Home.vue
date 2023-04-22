@@ -55,7 +55,7 @@
     <el-card style="margin-top: 1.25rem">
       <div class="e-title">文章贡献统计</div>
       <div v-loading="loading">
-        <calendar-heatmap :end-date="new Date()" :values="articleStatisticsDTOs" />
+        <calendar-heatmap :end-date="new Date()" :values="articleStats" />
       </div>
     </el-card>
     <el-row :gutter="20" style="margin-top: 1.25rem">
@@ -83,8 +83,8 @@
           <div style="height: 350px" v-loading="loading">
             <div class="area-wrapper">
               <el-radio-group v-model="type">
-                <el-radio :label="1">用户</el-radio>
-                <el-radio :label="2">游客</el-radio>
+                <el-radio :label="1">注册用户</el-radio>
+                <el-radio :label="2">访问游客</el-radio>
               </el-radio-group>
             </div>
             <v-chart :options="userAreaMap" />
@@ -95,7 +95,7 @@
         <el-card>
           <div class="e-title">文章标签统计</div>
           <div style="height: 350px" v-loading="loading">
-            <tag-cloud style="margin-top: 1.5rem" :data="tagDTOs" />
+            <tag-cloud style="margin-top: 1.5rem" :data="tags" />
           </div>
         </el-card>
       </el-col>
@@ -118,8 +118,8 @@ export default {
       messageCount: 0,
       userCount: 0,
       articleCount: 0,
-      articleStatisticsDTOs: [],
-      tagDTOs: [],
+      articleStats: [],
+      tags: [],
       viewCount: {
         tooltip: {
           trigger: 'axis',
@@ -282,16 +282,16 @@ export default {
         this.messageCount = data.data.messageCount
         this.userCount = data.data.userCount
         this.articleCount = data.data.articleCount
-        this.articleStatisticsDTOs = data.data.articleStatisticsDTOs
-        if (data.data.uniqueViewDTOs != null) {
-          data.data.uniqueViewDTOs.forEach((item) => {
+        this.articleStats = data.data.articleStats
+        if (data.data.uniqueViews != null) {
+          data.data.uniqueViews.forEach((item) => {
             this.viewCount.xAxis.data.push(item.day)
             this.viewCount.series[0].data.push(item.viewsCount)
           })
         }
 
-        if (data.data.categoryDTOs != null) {
-          data.data.categoryDTOs.forEach((item) => {
+        if (data.data.categories != null) {
+          data.data.categories.forEach((item) => {
             this.category.series[0].data.push({
               value: item.articleCount,
               name: item.categoryName
@@ -300,16 +300,16 @@ export default {
           })
         }
 
-        if (data.data.articleRankDTOs != null) {
-          data.data.articleRankDTOs.forEach((item) => {
+        if (data.data.articleRanks != null) {
+          data.data.articleRanks.forEach((item) => {
             this.ariticleRank.series[0].data.push(item.viewsCount)
             this.ariticleRank.xAxis.data.push(item.articleTitle)
           })
         }
 
-        if (data.data.tagDTOs != null) {
-          data.data.tagDTOs.forEach((item) => {
-            this.tagDTOs.push({
+        if (data.data.tags != null) {
+          data.data.tags.forEach((item) => {
+            this.tags.push({
               id: item.id,
               name: item.tagName
             })

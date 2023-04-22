@@ -49,7 +49,7 @@ export default {
               let param = new URLSearchParams()
               param.append('username', that.loginForm.username)
               param.append('password', that.loginForm.password)
-              that.axios.post('/api/users/login', param).then(({ data }) => {
+              that.axios.post('/api/admin/users/login', param).then(({ data }) => {
                 if (data.flag) {
                   that.$store.commit('login', data.data)
                   generaMenu()
